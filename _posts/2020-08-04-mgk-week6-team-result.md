@@ -1,5 +1,5 @@
 ---
-title: 모각코 6주차 팀 목표
+title: 모각코 6주차 팀 결과
 author: potion
 date: 2020-08-04 23:00:00 +0900
 categories: [cnu, mogagko]
