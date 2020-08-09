@@ -1,5 +1,5 @@
 ---
-title: 모각코 3주차 팀 목표
+title: 모각코 4주차 팀 목표
 author: potion
 date: 2020-07-21 23:00:00 +0900
 categories: [cnu, mogagko]
