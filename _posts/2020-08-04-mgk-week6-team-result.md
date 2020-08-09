@@ -6,7 +6,7 @@ categories: [cnu, mogagko]
 tags: [mogagko]
 ---
 
-## 팀원간 목표
+## 팀원 결과
 
 김종운 : [http://potionk.github.io/posts/mgk-week6-result/](http://potionk.github.io/posts/mgk-week6-result/)<br>
 정지수 : [https://blog.naver.com/jaywhom/222051358093](https://blog.naver.com/jaywhom/222051358093)<br>
