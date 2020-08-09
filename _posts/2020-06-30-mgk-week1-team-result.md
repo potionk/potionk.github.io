@@ -16,4 +16,4 @@ tags: [mogagko]
 * Zoom
 ![Zoom](/assets/img/mogagko/week1_zoom.png)
 * Selfie
-![Selfie](/assets/img/mogagko/week1_selfie.jpg)
+![Selfie](/assets/img/mogagko/week1_selfie.jpeg)
