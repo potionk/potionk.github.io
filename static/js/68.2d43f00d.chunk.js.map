@@ -1,0 +1,1 @@
+{"version":3,"sources":["views/Game/Download/Download.js"],"names":["Download","Component"],"mappings":"mLAEMA,E,uKAEF,OAAO,6C,GAFYC,aAMRD","file":"static/js/68.2d43f00d.chunk.js","sourcesContent":["import React, {Component} from 'react';\n\nclass Download extends Component {\n  render() {\n    return <div>Download</div>;\n  }\n}\n\nexport default Download;"],"sourceRoot":""}

@@ -1,0 +1,1 @@
+{"version":3,"sources":["views/Community/Photo/Photo.js"],"names":["Photo","Component"],"mappings":"mLAEMA,E,uKAEF,OAAO,0C,GAFSC,aAMLD","file":"static/js/65.7703b7da.chunk.js","sourcesContent":["import React, {Component} from 'react';\n\nclass Photo extends Component {\n  render() {\n    return <div>Photo</div>;\n  }\n}\n\nexport default Photo;"],"sourceRoot":""}

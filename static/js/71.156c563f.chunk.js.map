@@ -1,0 +1,1 @@
+{"version":3,"sources":["views/Game/Update/Update.js"],"names":["Update","Component"],"mappings":"mLAEMA,E,uKAEF,OAAO,2C,GAFUC,aAMND","file":"static/js/71.156c563f.chunk.js","sourcesContent":["import React, {Component} from 'react';\n\nclass Update extends Component {\n  render() {\n    return <div>Update</div>;\n  }\n}\n\nexport default Update;"],"sourceRoot":""}

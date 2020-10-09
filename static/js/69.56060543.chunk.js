@@ -1,0 +1,2 @@
+(this["webpackJsonppotion-blog"]=this["webpackJsonppotion-blog"]||[]).push([[69],{1021:function(t,n,e){"use strict";e.r(n);var o=e(221),a=e(222),r=e(224),c=e(223),i=e(3),u=e.n(i),p=function(t){Object(r.a)(e,t);var n=Object(c.a)(e);function e(){return Object(o.a)(this,e),n.apply(this,arguments)}return Object(a.a)(e,[{key:"render",value:function(){return u.a.createElement("div",null,"Event")}}]),e}(i.Component);n.default=p}}]);
+//# sourceMappingURL=69.56060543.chunk.js.map

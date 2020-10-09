@@ -1,0 +1,1 @@
+{"version":3,"sources":["views/News/News.js"],"names":["News","Component"],"mappings":"mLAEMA,E,uKAEF,OAAO,yC,GAFQC,aAMJD","file":"static/js/72.e07a0149.chunk.js","sourcesContent":["import React, {Component} from 'react';\n\nclass News extends Component {\n  render() {\n    return <div>News</div>;\n  }\n}\n\nexport default News;"],"sourceRoot":""}
