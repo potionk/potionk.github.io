@@ -1,1 +1,0 @@
-{"version":3,"sources":["views/Game/Event/Event.js"],"names":["Event","Component"],"mappings":"mLAEMA,E,uKAEF,OAAO,0C,GAFSC,aAMLD","file":"static/js/69.56060543.chunk.js","sourcesContent":["import React, {Component} from 'react';\n\nclass Event extends Component {\n  render() {\n    return <div>Event</div>;\n  }\n}\n\nexport default Event;"],"sourceRoot":""}

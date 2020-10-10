@@ -1,1 +1,0 @@
-{"version":3,"sources":["views/Community/Travel/Travel.js"],"names":["Travel","Component"],"mappings":"mLAEMA,E,uKAEF,OAAO,2C,GAFUC,aAMND","file":"static/js/66.48968248.chunk.js","sourcesContent":["import React, {Component} from 'react';\n\nclass Travel extends Component {\n  render() {\n    return <div>Travel</div>;\n  }\n}\n\nexport default Travel;"],"sourceRoot":""}

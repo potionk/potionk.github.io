@@ -1,1 +1,0 @@
-{"version":3,"sources":["views/Community/GameBBS/GameBBS.js"],"names":["GameBBS","Component"],"mappings":"mLAEMA,E,uKAEF,OAAO,4C,GAFWC,aAMPD","file":"static/js/63.616cfb1c.chunk.js","sourcesContent":["import React, {Component} from 'react';\n\nclass GameBBS extends Component {\n  render() {\n    return <div>GameBBS</div>;\n  }\n}\n\nexport default GameBBS;"],"sourceRoot":""}
