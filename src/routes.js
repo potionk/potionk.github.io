@@ -41,39 +41,41 @@ const User = React.lazy(() => import('./views/Users/User'));
 
 // Neverland web
 const Home = React.lazy(() => import('./views/Home/Home'));
-const Free = React.lazy(() => import('./views/Community/Free/Free'));
-const FreeBBS = React.lazy(() => import('./views/Community/Free/FreeBBS'));
-const GameBBS = React.lazy(() => import('./views/Community/GameBBS/GameBBS'));
-const Information = React.lazy(() => import('./views/Community/Information/Information'));
-const Photo = React.lazy(() => import('./views/Community/Photo/Photo'));
-const Travel = React.lazy(() => import('./views/Community/Travel/Travel'));
-const Download = React.lazy(() => import('./views/Game/Download/Download'));
-const Event = React.lazy(() => import('./views/Game/Event/Event'));
-const Notice = React.lazy(() => import('./views/Game/Notice/Notice'));
-const Ranking = React.lazy(() => import('./views/Game/Ranking/Ranking'));
-const Update = React.lazy(() => import('./views/Game/Update/Update'));
-const News = React.lazy(() => import('./views/News/News'));
-const Write = React.lazy(() => import('./views/Community/Write'));
+const MainMaker = React.lazy(() => import('./views/Algorithm/Programmers/MainMaker'));
+// const Free = React.lazy(() => import('./views/Community/Free/Free'));
+// const FreeBBS = React.lazy(() => import('./views/Community/Free/FreeBBS'));
+// const GameBBS = React.lazy(() => import('./views/Community/GameBBS/GameBBS'));
+// const Information = React.lazy(() => import('./views/Community/Information/Information'));
+// const Photo = React.lazy(() => import('./views/Community/Photo/Photo'));
+// const Travel = React.lazy(() => import('./views/Community/Travel/Travel'));
+// const Download = React.lazy(() => import('./views/Game/Download/Download'));
+// const Event = React.lazy(() => import('./views/Game/Event/Event'));
+// const Notice = React.lazy(() => import('./views/Game/Notice/Notice'));
+// const Ranking = React.lazy(() => import('./views/Game/Ranking/Ranking'));
+// const Update = React.lazy(() => import('./views/Game/Update/Update'));
+// const News = React.lazy(() => import('./views/News/News'));
+// const Write = React.lazy(() => import('./views/Community/Write'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   // Neverland web
   { path: '/', exact: true, name: 'Home' },
   { path: '/home', exact: true, name: 'Home', component: Home },
-  { path: '/news', exact: true, name: 'News', component: News },
-  { path: '/community/free', exact: true, name: 'Free', component: Free },
-  { path: '/community/free:id', exact: true, name: 'Free', component: Free },
-  { path: '/community/free/:id', exact: true, name: 'Free Details', component: FreeBBS },
-  { path: '/community/gameBBS', exact: true, name: 'GameBBS', component: GameBBS },
-  { path: '/community/information', exact: true, name: 'Information', component: Information },
-  { path: '/community/photo', exact: true, name: 'HomPhotoe', component: Photo },
-  { path: '/community/travel', exact: true, name: 'Travel', component: Travel },
-  { path: '/game/download', exact: true, name: 'Home', component: Download },
-  { path: '/game/event', exact: true, name: 'Event', component: Event },
-  { path: '/game/notice', exact: true, name: 'Notice', component: Notice },
-  { path: '/game/ranking', exact: true, name: 'Ranking', component: Ranking },
-  { path: '/game/update', exact: true, name: 'Update', component: Update },
-  { path: '/community/write', exact: true, name: 'Write', component: Write },
+  { path: '/algorithm/programmers/testmain', exact: true, name: 'MainMaker', component: MainMaker },
+  // { path: '/news', exact: true, name: 'News', component: News },
+  // { path: '/community/free', exact: true, name: 'Free', component: Free },
+  // { path: '/community/free:id', exact: true, name: 'Free', component: Free },
+  // { path: '/community/free/:id', exact: true, name: 'Free Details', component: FreeBBS },
+  // { path: '/community/gameBBS', exact: true, name: 'GameBBS', component: GameBBS },
+  // { path: '/community/information', exact: true, name: 'Information', component: Information },
+  // { path: '/community/photo', exact: true, name: 'HomPhotoe', component: Photo },
+  // { path: '/community/travel', exact: true, name: 'Travel', component: Travel },
+  // { path: '/game/download', exact: true, name: 'Home', component: Download },
+  // { path: '/game/event', exact: true, name: 'Event', component: Event },
+  // { path: '/game/notice', exact: true, name: 'Notice', component: Notice },
+  // { path: '/game/ranking', exact: true, name: 'Ranking', component: Ranking },
+  // { path: '/game/update', exact: true, name: 'Update', component: Update },
+  // { path: '/community/write', exact: true, name: 'Write', component: Write },
   
   // Core UI
   { path: '/Page404', name: 'Page404', component: Page404 },
