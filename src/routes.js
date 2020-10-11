@@ -42,6 +42,7 @@ const User = React.lazy(() => import('./views/Users/User'));
 // Neverland web
 const Home = React.lazy(() => import('./views/Home/Home'));
 const MainMaker = React.lazy(() => import('./views/Algorithm/Programmers/MainMaker'));
+const ClassMaker = React.lazy(() => import('./views/Algorithm/Java/ClassMaker'));
 // const Free = React.lazy(() => import('./views/Community/Free/Free'));
 // const FreeBBS = React.lazy(() => import('./views/Community/Free/FreeBBS'));
 // const GameBBS = React.lazy(() => import('./views/Community/GameBBS/GameBBS'));
@@ -61,7 +62,8 @@ const routes = [
   // Neverland web
   { path: '/', exact: true, name: 'Home' },
   { path: '/home', exact: true, name: 'Home', component: Home },
-  { path: '/algorithm/programmers/testmain', exact: true, name: 'MainMaker', component: MainMaker },
+  { path: '/algorithm/programmers/main_maker', exact: true, name: 'MainMaker', component: MainMaker },
+  { path: '/algorithm/java/class_maker', exact: true, name: 'ClassMaker', component: ClassMaker },
   // { path: '/news', exact: true, name: 'News', component: News },
   // { path: '/community/free', exact: true, name: 'Free', component: Free },
   // { path: '/community/free:id', exact: true, name: 'Free', component: Free },

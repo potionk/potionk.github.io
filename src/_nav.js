@@ -17,7 +17,19 @@ export default {
           children: [
             {
               name: '테스트용 메인 생성기',
-              url: '/algorithm/programmers/testmain',
+              url: '/algorithm/programmers/main_maker',
+              icon: 'icon-pencil',
+            },
+          ],
+        },
+        {
+          name: 'Java',
+          url: '/algorithm/Java',
+          icon: 'icon-note',
+          children: [
+            {
+              name: 'Class skeleton 생성기',
+              url: '/algorithm/java/class_maker',
               icon: 'icon-pencil',
             },
           ],
