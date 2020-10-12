@@ -17,6 +17,7 @@ class MainMaker extends Component {
   handleChange = (e) => {
     let solutionFunc = e.target.value;
     let t1 = solutionFunc.split("(");
+    console.log(t1);
     if (t1.length >= 2) {
       let t2 = t1[1].split(")");
       let args = t2[0].split(",");
@@ -29,7 +30,8 @@ class MainMaker extends Component {
       this.setState({
         args: argsArr,
         argumentNum: argsNum,
-        inputs: inputs
+        inputs: inputs,
+        methodInfo: t1[0]
       })
     }
   };
@@ -55,8 +57,8 @@ class MainMaker extends Component {
       p_translated_text: this.state.korean_text,
     });
   };
-  
-  handleResultTextArea =(e) =>{
+
+  handleResultTextArea = (e) => {
     // onChange가 없으면 warning 발생
   };
 
@@ -110,6 +112,15 @@ class MainMaker extends Component {
     let args = this.state.args;
     let argNum = this.state.argumentNum;
     let inputs = this.state.inputs;
+    let methodInfo = this.state.methodInfo.split(" ");
+    let methodName, returnType;
+    if (methodInfo.length === 3) {
+      returnType = methodInfo[1];
+      methodName = methodInfo[2];
+    } else {
+      returnType = methodInfo[0];
+      methodName = methodInfo[1];
+    }
     for (let i = 0; i < inputs.length; i++) {
       let before = inputs[i];
       let after = "";
@@ -128,14 +139,23 @@ class MainMaker extends Component {
     for (let i = 0; i < argNum; i++) {
       result += "\t\t" + args[i] + " = " + inputs[i] + ";\n";
     }
-    result += "\t\tsolution.solution(";
+    if (returnType === "void") {
+      result += "\t\tsolution.solution(";
+    } else {
+      result += "\t\t" + returnType + " result = solution." + methodName + "(";
+    }
+
     for (let i = 0; i < argNum; i++) {
       result += args[i].split(" ")[1];
       if (i !== argNum - 1) {
         result += ", ";
       }
     }
-    result += ");\n\t}";
+    result += ");\n"
+    if (returnType !== "void") {
+      result += "\t\tSystem.out.println(result);\n";
+    }
+    result+= "\t}";
     this.setState({
       result: result,
     });
