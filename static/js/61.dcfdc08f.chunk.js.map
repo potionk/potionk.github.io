@@ -1,0 +1,1 @@
+{"version":3,"sources":["views/Home/Home.js"],"names":["Download","Component"],"mappings":"mLAEMA,E,uKAEF,OAAO,0D,GAFYC,aAMRD","file":"static/js/61.dcfdc08f.chunk.js","sourcesContent":["import React, {Component} from 'react';\n\nclass Download extends Component {\n  render() {\n    return <div>For better efficiency</div>;\n  }\n}\n\nexport default Download;"],"sourceRoot":""}
