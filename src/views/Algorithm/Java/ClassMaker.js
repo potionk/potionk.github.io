@@ -7,12 +7,12 @@ class CompatorMaker extends Component {
     this.state = {
       className: "",
       fieldNum: 1,
-      field: [],
+      field: ["arg"],
       getter: [false],
       setter: [false],
       result: "",
       constructorNum: 0,
-      constructor: []
+      constructorField: [[false]]
     };
   };
 
@@ -24,22 +24,32 @@ class CompatorMaker extends Component {
 
   handleFieldNum = (e) => {
     let value = parseInt(e.target.value);
-    let gsArr = new Array(value).fill(false);
     this.setState({
       fieldNum: value,
-      field: new Array(value).fill("arg"),
-      getter: gsArr,
-      setter: gsArr
+      field: new Array(value).fill("arg"), // TODO 기존 값 채워두고 필드 갯수를 바꾸면 arg로 채워지는 버그 있음
+      getter: new Array(value).fill(false),
+      setter: new Array(value).fill(false)
     })
   };
 
   handleConstructorNum = (e) => {
     let value = parseInt(e.target.value);
-    let gsArr = new Array(value);
+    var arr = new Array(value);
+    for (var i = 0; i < arr.length; i++) {
+      arr[i] = new Array(value).fill(false);
+    }
     this.setState({
-      constructor: gsArr,
-      constructorNum: value
+      constructorNum: value,
+      constructorField: arr
     })
+  };
+
+  handleConstructorCBox = (e) => {
+    let constructorField = this.state.constructorField;
+    constructorField[e.target.dataset.index][e.target.name] = e.target.checked;
+    this.setState({
+      constructorField: constructorField
+    });
   };
 
   handleRadio = (e) => {
@@ -52,7 +62,6 @@ class CompatorMaker extends Component {
   handleArgsInput = (e) => {
     let field = this.state.field;
     field[e.target.dataset.index] = e.target.value.trim().split(";")[0];
-    console.log(field)
     this.setState({
       field: field,
     });
@@ -66,7 +75,7 @@ class CompatorMaker extends Component {
     let getter = this.state.getter;
     let setter = this.state.setter;
     let index = e.target.dataset.index;
-    let isGetter = e.target.checked === "getter" ? true : false;
+    let isGetter = (e.target.name === "getter") ? true : false;
     if (isGetter) {
       getter[index] = e.target.checked;
     } else {
@@ -76,8 +85,7 @@ class CompatorMaker extends Component {
       getter: getter,
       setter: setter
     });
-    console.log(getter)
-    console.log(setter)
+
   }
 
   handleSubmit = (e) => {
@@ -160,24 +168,24 @@ class CompatorMaker extends Component {
 
   makeConstructorInput() {
     let field = this.state.field;
-    let constructorNum=this.state.constructorNum;
-    let arr=new Array(constructorNum).fill(1)
+    let constructorNum = this.state.constructorNum;
+    let arr = new Array(constructorNum).fill(1)
     return (
       <div>
         {arr.map((t, index) => (
-            <FormGroup row key={index}>
-              <Col md="3">
-        <Label htmlFor="text-input">{index+1}번째 필드 선택</Label>
-              </Col>
-              <Col md="9">
-                {field.map((txt, index) => (
-                  <FormGroup check inline key={index}>
-                    <Input className="form-check-input" type="checkbox" id={"getter" + index} name="getter" data-index={index} value={index} onChange={this.handleCheckBox} />
-                    <Label className="form-check-label" check htmlFor="inline-checkbox1">{txt}</Label>
-                  </FormGroup>
-                ))}
-              </Col>
-            </FormGroup>
+          <FormGroup row key={index}>
+            <Col md="3">
+              <Label htmlFor="text-input">{index + 1}번 생성자 인자 선택</Label>
+            </Col>
+            <Col md="9">
+              {field.map((txt, fieldIdx) => (
+                <FormGroup check inline key={fieldIdx}>
+                  <Input className="form-check-input" type="checkbox" id={index + "" + fieldIdx} name={fieldIdx} data-index={index} value={fieldIdx} onChange={this.handleConstructorCBox} />
+                  <Label className="form-check-label" check htmlFor="inline-checkbox1">{txt}</Label>
+                </FormGroup>
+              ))}
+            </Col>
+          </FormGroup>
         ))}
       </div>
     )
@@ -195,35 +203,59 @@ class CompatorMaker extends Component {
   }
 
   makeTestMain() {
-    let args = this.state.args;
-    let argNum = this.state.argumentNum;
-    let inputs = this.state.inputs;
-    for (let i = 0; i < inputs.length; i++) {
-      let before = inputs[i];
-      let after = "";
-      for (let j = 0; j < before.length; j++) {
-        if (before[j] === '[') {
-          after += '{';
-        } else if (before[j] === ']') {
-          after += '}';
-        } else {
-          after += before[j];
+    let result = "class " + this.state.className + "{\n";
+    let field = this.state.field;
+    let fieldNames = new Array(field.length);
+    let fieldTypes = new Array(field.length);
+    let getter = this.state.getter;
+    let setter = this.state.setter;
+    let constructorNum = this.state.constructorNum;
+    let constructorField = this.state.constructorField;
+    let className = this.state.className;
+    let fieldNum = this.state.fieldNum;
+    for (let i = 0; i < field.length; i++) {
+      let split = field[i].split(" ");
+      if (split.length !== 2) {
+        alert((i + 1) + "번째 필드의 입력이 올바르지 않습니다.");
+        return;
+      }
+      fieldTypes[i] = split[0];
+      fieldNames[i] = split[1];
+      result += "\tprivate " + field[i] + ";\n";
+    }
+    result += "\n";
+    for (let i = 0; i < getter.length; i++) {
+      if (getter[i]) {
+        let toCamelCase = fieldNames[i].charAt(0).toUpperCase() + fieldNames[i].substr(1);
+        result += "\tpublic " + fieldTypes[i] + " get" + toCamelCase + "() {\n\t\treturn " + fieldNames[i] + ";\n\t}\n";
+      }
+    }
+    for (let i = 0; i < setter.length; i++) {
+      if (setter[i]) {
+        let toCamelCase = fieldNames[i].charAt(0).toUpperCase() + fieldNames[i].substr(1);
+        result += "\tpublic void set" + toCamelCase + "(" + field[i] + ") {\n\t\tthis." + fieldNames[i] + " = " + fieldNames[i] + ";\n\t}\n";
+      }
+    }
+    for (let i = 0; i < constructorNum; i++) {
+      result += "\tpublic " + className + "(";
+      for (let j = 0; j < fieldNum; j++) {
+        if (constructorField[i][j]) {
+          result += field[j];
+          if (j !== fieldNum - 1) {
+            result += ", ";
+          }
         }
       }
-      inputs[i] = after;
-    }
-    let result = "\tpublic static void main(String[] args) {\n\t\tSolution solution=new Solution();\n";
-    for (let i = 0; i < argNum; i++) {
-      result += "\t\t" + args[i] + " = " + inputs[i] + ";\n";
-    }
-    result += "\t\tsolution.solution(";
-    for (let i = 0; i < argNum; i++) {
-      result += args[i].split(" ")[1];
-      if (i !== argNum - 1) {
-        result += ", ";
+      result += ") {\n";
+      for (let j = 0; j < fieldNum; j++) {
+        if (constructorField[i][j]) {
+          result += "\t\tthis." + fieldNames[j] + " = " + fieldNames[j] + ";\n";
+        }
       }
+      result += "\t}\n"
     }
-    result += ");\n\t}";
+    result += "}";
+
     this.setState({
       result: result,
     });
@@ -281,7 +313,7 @@ class CompatorMaker extends Component {
                 <strong>Result</strong>
               </CardHeader>
               <CardBody>
-                <Input type="textarea" value={this.state.result} rows="9" onChange={this.handleResultTextArea}></Input>
+                <Input type="textarea" value={this.state.result} rows="20" onChange={this.handleResultTextArea}></Input>
                 <Button onClick={() => this.copy()}>클립보드에 복사</Button>
               </CardBody>
             </Card>

@@ -17,7 +17,6 @@ class MainMaker extends Component {
   handleChange = (e) => {
     let solutionFunc = e.target.value;
     let t1 = solutionFunc.split("(");
-    console.log(t1);
     if (t1.length >= 2) {
       let t2 = t1[1].split(")");
       let args = t2[0].split(",");
