@@ -287,7 +287,7 @@ class CompatorMaker extends Component {
   makeClass() {
     let sortCdt = this.state.sortCdt;
     let className = this.state.className;
-    let result = "class " + className + sortCdt ? " implements Comparable<" + className + "> {\n" : " {";
+    let result = "class " + className + (sortCdt ? " implements Comparable<" + className + "> {\n" : " {\n");
     let field = this.state.field;
     let fieldNames = new Array(field.length);
     let fieldTypes = new Array(field.length);
