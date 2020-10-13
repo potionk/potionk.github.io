@@ -12,7 +12,11 @@ class CompatorMaker extends Component {
       setter: [false],
       result: "",
       constructorNum: 0,
-      constructorField: [[false]]
+      constructorField: [[false]],
+      sortCdt: false,
+      sortPriority: [""],
+      isAscending: [true],
+      priorityNum: 0,
     };
   };
 
@@ -24,6 +28,7 @@ class CompatorMaker extends Component {
 
   handleFieldNum = (e) => {
     let value = parseInt(e.target.value);
+    console.log("isFirst?")
     this.setState({
       fieldNum: value,
       field: new Array(value).fill("arg"), // TODO 기존 값 채워두고 필드 갯수를 바꾸면 arg로 채워지는 버그 있음
@@ -58,6 +63,13 @@ class CompatorMaker extends Component {
     })
   }
 
+  handleSortCdt = (e) => {
+    this.setState({
+      sortCdt: e.target.checked,
+      sortPriority: new Array(this.state.fieldNum).fill(""),
+      isAscending: new Array(this.state.fieldNum).fill(true)
+    });
+  };
 
   handleArgsInput = (e) => {
     let field = this.state.field;
@@ -67,7 +79,7 @@ class CompatorMaker extends Component {
     });
   };
 
-  handleResultTextArea = (e) => {
+  handleDummy = (e) => {
     // onChange가 없으면 warning 발생
   };
 
@@ -85,13 +97,36 @@ class CompatorMaker extends Component {
       getter: getter,
       setter: setter
     });
-
   }
 
-  handleSubmit = (e) => {
+  handlePriority = (e) => {
+    let index = e.target.dataset.index;
+    let priorityNum = this.state.priorityNum;
+    let sortPriority = this.state.sortPriority;
+    if (e.target.checked) {
+      sortPriority[priorityNum] = index;
+      priorityNum++;
+    } else {
+      sortPriority.splice(sortPriority.indexOf(index), 1);
+      priorityNum--;
+    }
     this.setState({
-      p_translated_text: this.state.korean_text,
-    });
+      sortPriority: sortPriority,
+      priorityNum: priorityNum
+    })
+  }
+
+  handleIsAscend = (e) => {
+    let isAscending = this.state.isAscending;
+    let index = e.target.dataset.index;
+    if (e.target.value === "ascending") {
+      isAscending[index] = true;
+    } else {
+      isAscending[index] = false;
+    }
+    this.setState({
+      isAscending: isAscending
+    })
   }
 
   copy() {
@@ -191,6 +226,53 @@ class CompatorMaker extends Component {
     )
   }
 
+  makeSortedCondition() {
+    if (this.state.sortCdt) {
+      let sortPriority = this.state.sortPriority;
+      let priorityNum = this.state.priorityNum;
+      let loop = new Array(priorityNum).fill(0);
+      let field = this.state.field;
+      let isAscending = this.state.isAscending;
+      return (
+        <FormGroup row>
+          <Col md="3">
+            <Label htmlFor="text-input">우선순위 선택</Label>
+          </Col>
+          <Col md="9">
+            {field.map((txt, idx) => (
+              <FormGroup check inline key={idx}>
+                <Input className="form-check-input" type="checkbox" id={idx} name={idx} data-index={idx} value={idx} onChange={this.handlePriority} />
+                <Label className="form-check-label" check htmlFor="inline-checkbox1">{txt}</Label>
+              </FormGroup>
+            ))}
+          </Col>
+          <Col md="3"></Col><Col md="9">원하는 순서대로 체크를 눌러주세요.</Col>
+          <Col md="3"></Col><Col md="9">
+            {loop.map((txt, idx) => (
+              <div key={idx}><div>{idx + 1 + "번째 : " + field[sortPriority[idx]]}</div>
+                <FormGroup row>
+                  <Col>
+                    <FormGroup check inline>
+                      <Input className="form-check-input" type="radio" id={"isAs" + idx} data-index={idx} name={"ad" + idx} value="ascending" checked={isAscending[idx]} onChange={this.handleIsAscend} />
+                      <Label className="form-check-label" check htmlFor="inline-radio1">오름차순</Label>
+                    </FormGroup>
+                    <FormGroup check inline>
+                      <Input className="form-check-input" type="radio" id={"isDs" + idx} data-index={idx} name={"ad" + idx} value="descending" checked={!isAscending[idx]} onChange={this.handleIsAscend} />
+                      <Label className="form-check-label" check htmlFor="inline-radio2">내림차순</Label>
+                    </FormGroup>
+                  </Col>
+                </FormGroup>
+              </div>
+            ))}
+          </Col>
+        </FormGroup>
+      )
+    } else {
+      return "";
+    }
+
+  }
+
   printResult() {
     return (
       <Col>
@@ -202,8 +284,10 @@ class CompatorMaker extends Component {
     )
   }
 
-  makeTestMain() {
-    let result = "class " + this.state.className + "{\n";
+  makeClass() {
+    let sortCdt = this.state.sortCdt;
+    let className = this.state.className;
+    let result = "class " + className + sortCdt ? " implements Comparable<" + className + "> {\n" : " {";
     let field = this.state.field;
     let fieldNames = new Array(field.length);
     let fieldTypes = new Array(field.length);
@@ -211,8 +295,11 @@ class CompatorMaker extends Component {
     let setter = this.state.setter;
     let constructorNum = this.state.constructorNum;
     let constructorField = this.state.constructorField;
-    let className = this.state.className;
     let fieldNum = this.state.fieldNum;
+    let sortPriority = this.state.sortPriority;
+    let priorityNum = this.state.priorityNum;
+    let isAscending = this.state.isAscending;
+    console.log(isAscending)
     for (let i = 0; i < field.length; i++) {
       let split = field[i].split(" ");
       if (split.length !== 2) {
@@ -254,11 +341,88 @@ class CompatorMaker extends Component {
       }
       result += "\t}\n"
     }
+    if (sortCdt) {
+      result += "\t@Override\n\tpublic int compareTo(" + className + " o) {\n"
+      result += this.makeCompareToCode(0, sortPriority, isAscending, priorityNum, fieldNames, fieldTypes, 2);
+      result += "\t}\n"
+    }
     result += "}";
 
     this.setState({
       result: result,
     });
+  }
+
+  makeCompareToCode(idx, sortPriority, isAscending, priorityNum, fieldNames, fieldTypes, tabCount) {
+    let result = "";
+    if (idx !== priorityNum - 1) {
+      let name = fieldNames[sortPriority[idx]];
+      let type = fieldTypes[sortPriority[idx]];
+      let getMethod = "o.get" + name.charAt(0).toUpperCase() + name.substr(1) + "()";
+      let thisName = "this." + name;
+      if (type !== "String") {
+        result += this.makeTabs(tabCount) + "if (" + thisName + " < " + getMethod + ") {\n";
+        result += this.makeTabs(tabCount + 1) + "return " + (isAscending[idx] ? "-1" : "1") + ";\n";
+        result += this.makeTabs(tabCount) + "else if (" + thisName + " == " + getMethod + ") {\n";
+        result += this.makeCompareToCode(idx + 1, sortPriority, isAscending, priorityNum, fieldNames, fieldTypes, tabCount + 1);
+        result += this.makeTabs(tabCount) + "else {\n";
+        result += this.makeTabs(tabCount + 1) + "return " + (isAscending[idx] ? "1" : "-1") + ";\n" + this.makeTabs(tabCount) + "}\n";
+      }
+    } else if (idx === priorityNum - 1) {
+      let name = fieldNames[sortPriority[idx]];
+      let type = fieldTypes[sortPriority[idx]];
+      let getMethod = "o.get" + name.charAt(0).toUpperCase() + name.substr(1) + "()";
+      let thisName = "this." + name;
+      let compare = isAscending[idx] ? thisName + ", " + getMethod : getMethod + ", " + thisName;
+      result+=this.makeTabs(tabCount);
+      switch (type) {
+        case "int":
+        case "Integer":
+          result += "return Integer.compare(" + compare + ");\n";
+          break;
+        case "byte":
+        case "Byte":
+          result += "return Byte.compare(" + compare + ");\n";
+          break;
+        case "short":
+        case "Short":
+          result += "return Short.compare(" + compare + ");\n";
+          break;
+        case "long":
+        case "Long":
+          result += "return Long.compare(" + compare + ");\n";
+          break;
+        case "float":
+        case "Float":
+          result += "return Float.compare(" + compare + ");\n";
+          break;
+        case "double":
+        case "Double":
+          result += "return Double.compare(" + compare + ");\n";
+          break;
+        case "char":
+        case "Character":
+          result += "return Character.compare(" + compare + ");\n";
+          break;
+        case "boolean":
+        case "Boolean":
+          result += "return Boolean.compare(" + compare + ");\n";
+          break;
+        case "String":
+          result += "return String." + isAscending[idx] ? thisName + ".compareTo(" + getMethod + ");\n" : getMethod + ".compareTo(" + thisName + ");\n";
+          break;
+        default:
+      }
+    }
+    return result;
+  }
+
+  makeTabs(tabCount) {
+    let tabs = "";
+    for (let i = 0; i < tabCount; i++) {
+      tabs += "\t";
+    }
+    return tabs;
   }
 
   render() {
@@ -302,7 +466,16 @@ class CompatorMaker extends Component {
                   {this.makeFieldsInput()}
                   {this.makeConstructorNumInput()}
                   {this.makeConstructorInput()}
-                  <Button onClick={() => this.makeTestMain()}>Create!</Button>
+                  <FormGroup row>
+                    <Col>
+                      <FormGroup check inline>
+                        <Input className="form-check-input" type="checkbox" id="isCompareTo" name="getter" value="isCompareTo" onChange={this.handleSortCdt} />
+                        <Label className="form-check-label" check htmlFor="inline-checkbox1">정렬 조건 생성 (implements Comparable)</Label>
+                      </FormGroup>
+                    </Col>
+                  </FormGroup>
+                  {this.makeSortedCondition()}
+                  <Button onClick={() => this.makeClass()}>Create!</Button>
                 </Form>
               </CardBody>
             </Card>
@@ -313,11 +486,10 @@ class CompatorMaker extends Component {
                 <strong>Result</strong>
               </CardHeader>
               <CardBody>
-                <Input type="textarea" value={this.state.result} rows="20" onChange={this.handleResultTextArea}></Input>
+                <Input type="textarea" value={this.state.result} rows="20" onChange={this.handleDummy}></Input>
                 <Button onClick={() => this.copy()}>클립보드에 복사</Button>
               </CardBody>
             </Card>
-
           </Col>
         </Row>
       </div>
