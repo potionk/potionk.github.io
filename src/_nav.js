@@ -23,6 +23,18 @@ export default {
           ],
         },
         {
+          name: 'LeetCode Helper',
+          url: '/algorithm/leetcode',
+          icon: 'icon-note',
+          children: [
+            {
+              name: '테스트용 메인 생성기',
+              url: '/algorithm/programmers/main_maker',
+              icon: 'icon-pencil',
+            },
+          ],
+        },
+        {
           name: 'Java',
           url: '/algorithm/Java',
           icon: 'icon-note',

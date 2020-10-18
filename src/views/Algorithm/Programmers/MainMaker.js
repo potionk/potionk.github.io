@@ -9,7 +9,7 @@ class MainMaker extends Component {
       output: "",
       argumentNum: 1,
       args: ["첫번째 인자"],
-      inputs: [],
+      inputs: [""],
       result: ""
     };
   };
@@ -121,10 +121,13 @@ class MainMaker extends Component {
       methodName = methodInfo[1];
     }
     for (let i = 0; i < inputs.length; i++) {
+      let argType=args[i].split("[")[0];
       let before = inputs[i];
       let after = "";
       for (let j = 0; j < before.length; j++) {
-        if (before[j] === '[') {
+        if(argType==="char"&&before[j]==="\""){
+          after+="'";
+        } else if (before[j] === '[') {
           after += '{';
         } else if (before[j] === ']') {
           after += '}';
